@@ -7,10 +7,10 @@
             <div id="sprd-startpage-teaser" class="sprd-startpage-teaser sprd-startpage-teaser--with-link"><a
                     class="sprd-startpage-teaser__link" href="#">
                     <div class="sprd-startpage-teaser__image sprd-startpage-teaser__image--has-text"
-                         style="background-image:url({{asset('images/header2.png')}})"></div>
+                         style="background-image:url({{env('BASE_PATH')."/$shop->home_img"}})"></div>
                     <div class="sprd-startpage-teaser__content sprd-bg-m3"><h1 style="color:"
                                                                                class="sprd-startpage-teaser__caption sprd__caption">
-                            Welcome to Rehman</h1>
+                            {{$shop->shop_title}}</h1>
                         <div style="color:" class="sprd-startpage-teaser__subcaption">Find Your Product</div>
                         <button type="button" class="sprd-startpage-teaser__cta sprd-button sprd-btn-primary">Shop Now
                         </button>
@@ -25,61 +25,36 @@
 
                 <div class="row">
 
+                    @foreach($product as $pro)
                     <div class="col-lg-3 mb-5">
 
                         <div class="card col-lg-12 p-0">
-                            <img class="card-img-top" src="{{asset('images/header4.jpg')}}" alt="Card image cap">
+
+                            @php
+                                $design=\App\Models\designs::find($pro->design_id);
+
+                                @endphp
+                            @if($design)
+                                @php
+                                $detail=$pro->productDetail;
+
+                                @endphp
+
+                            <img src="{{env('BASE_PATH')."/$design->image"}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
+@endif
+                            <img class="card-img-top" src="{{$pro->product_img}}" style="height: 270px" alt="Card image cap">
                             <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">Product short description...</p>
-                                <a href="{{url('productDetail')}}" class="btn btn-primary">View Detail</a>
+                                <h5 class="card-title">{{$pro->product_name}}</h5>
+                                <a href="{{url("productDetail/$pro->id")}}" class="btn btn-primary">View Detail</a>
                             </div>
                         </div>
 
                     </div>
 
-
-                    <div class="col-lg-3 mb-5">
-
-                        <div class="card col-lg-12 p-0">
-                            <img class="card-img-top" src="{{asset('images/header4.jpg')}}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">Product short description...</p>
-                                <a href="{{url('productDetail')}}" class="btn btn-primary">View Detail</a>
-                            </div>
-                        </div>
-
-                    </div>
+                    @endforeach
 
 
 
-                    <div class="col-lg-3 mb-5">
-
-                        <div class="card col-lg-12 p-0">
-                            <img class="card-img-top" src="{{asset('images/header4.jpg')}}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">Product short description...</p>
-                                <a href="{{url('productDetail')}}" class="btn btn-primary">View Detail</a>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-lg-3 mb-5">
-
-                        <div class="card col-lg-12 p-0">
-                            <img class="card-img-top" src="{{asset('images/header4.jpg')}}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">Product Name</h5>
-                                <p class="card-text">Product short description...</p>
-                                <a href="{{url('productDetail')}}" class="btn btn-primary">View Detail</a>
-                            </div>
-                        </div>
-
-                    </div>
 
                 </div>
 

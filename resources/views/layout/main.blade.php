@@ -1,4 +1,6 @@
-
+@php
+    $shop=\App\Models\User::where('email','rehmanahmad101@gmail.com')->first();
+@endphp
 <!DOCTYPE html>
 <html class="sprd--standalone" lang="en">
 
@@ -33,7 +35,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     </div>
-    <h2  style="text-align: center;position: absolute;left: 45%">Rehman</h2>
+    <h2  style="text-align: center;position: absolute;left: 45%">{{$shop->shop}}</h2>
 
 
 
@@ -55,7 +57,7 @@
                     </div>
                 </nav>
 
-                <a class="sprd-header__title sprd__headline text-center d-lg-block d-md-none d-sm-none d-none font-weight-bold" href="">Rehman</a>
+                <a class="sprd-header__title sprd__headline text-center d-lg-block d-md-none d-sm-none d-none font-weight-bold" href="">{{$shop->shop}}</a>
             </div>
             <div id="sprd-navigation"
                  class="sprd-navigation sprd-bg-m1 sprd-c-s3 sprd-lbc-s3 sprd-navigation--hide-on-touchdevs">
@@ -101,8 +103,8 @@
 
 
                     <a
-                        class="sprd-info-footer__link" href="">+xx xxx xxxx <span
-                            class="sprd-info-footer__times">(Call us! Mon - Fri 9am - 6pm )</span></a>
+                        class="sprd-info-footer__link" href="">{{$shop->phone}}<span
+                            class="sprd-info-footer__times">{{$shop->shop_address}}</span></a>
                 </div>
             </div>
 

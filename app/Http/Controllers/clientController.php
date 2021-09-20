@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\cart;
 use App\Models\product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class clientController extends Controller
 {
@@ -60,5 +62,47 @@ class clientController extends Controller
 
 
         return view('productDetail',compact('product','data2'));
+    }
+    public function buy(Request $request)
+    {
+
+
+        if(session()->has('user_id_shop'))
+        {
+
+        $id=   \Session::get(('user_id_shop'));
+        $cart =new cart();
+        $cart->client_id=$id;
+        $cart->product_main_id=$request->product_main_id;
+        $cart->product_id=$request->product_id;
+        $cart->shop_id=$this->shop->id;
+        $cart->qty=$request->qty;
+        $cart->color=$request->color;
+        $cart->price=$request->price;
+        $cart->size=$request->size;
+        $cart->save();
+return redirect('cart')->with('success','Product added to cart successfully!');
+
+        }
+        else{
+           $string = Str::random(40);
+            \Session::put('user_id_shop',$string);
+
+            $cart =new cart();
+            $cart->client_id=$string;
+            $cart->product_main_id=$request->product_main_id;
+            $cart->product_id=$request->product_id;
+            $cart->shop_id=$request->shop_id;
+            $cart->qty=$request->qty;
+            $cart->color=$request->color;
+            $cart->price=$request->price;
+            $cart->size=$request->size;
+            $cart->save();
+            return redirect('cart')->with('success','Product added to cart successfully!');
+
+        }
+
+
+
     }
 }

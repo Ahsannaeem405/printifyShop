@@ -8,6 +8,17 @@
         <section>
 
             <div class="container-fluid p-5">
+                @if(session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session()->get('success') }}
+                    </div>
+            @endif
+
+                    @if(session()->has('error'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('error') }}
+                        </div>
+                @endif
             <!--Grid row-->
             <div class="row p-lg-0 p-4">
 
@@ -18,31 +29,54 @@
                     <div class="mb-3">
                         <div class="pt-4 wish-list">
 
-                            <h5 class="mb-4">Cart (<span>2</span> items)</h5>
+                            <h5 class="mb-4">Cart (<span>{{$cart->count()}}</span> items)</h5>
+@php $total=0; @endphp
+                            @foreach($cart as $cart)
 
                             <div class="row  mb-4 " style="    width: 100%;margin: 0px;">
                                 <div class="col-md-5 col-lg-3 col-xl-3 p-0">
                                     <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+
+                                        @php
+                                            $design=\App\Models\designs::find($cart->product->design_id);
+
+                                        @endphp
+                                        @if($design)
+                                            @php
+                                                $detail=$cart->product->productDetail;
+
+                                            @endphp
+
+                                            <img src="{{env('BASE_PATH')."/$design->image"}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
+                                        @endif
+
+
                                         <img class="img-fluid w-100"
-                                             src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg" alt="Sample">
+                                             src="{{$cart->product->product_img}}" alt="images">
 
                                     </div>
+
                                 </div>
                                 <div class="col-md-7 col-lg-9 col-xl-9">
                                     <div>
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <h5>Blue denim shirt</h5>
+                                                <h5>{{$cart->product->product_name}}</h5>
 
 
-                                                <p class="mb-3 text-muted text-uppercase small">Size: M</p>
+                                                <p class="mb-1 text-muted text-uppercase small">Size: {{$cart->size}}</p>
+                                                <p class="mb-3 text-muted text-uppercase small">Color: {{$cart->color}}</p>
                                             </div>
                                             <div>
+
+                                                <form action="{{url('cart/update')}}" method="post">
+                                                    @csrf
                                                 <div class="def-number-input number-input safari_only mb-0 w-100">
-                                                    <button style="border: none;border-radius: 5px;padding: 7px" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                    <button type="button" style="border: none;border-radius: 5px;padding: 7px" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
                                                             class="btn-primary fa fa-minus"></button>
-                                                    <input class="quantity" min="1" name="quantity" value="1" type="number">
-                                                    <button style="border: none;border-radius: 5px;padding: 7px" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                    <input type="hidden" name="cart[]" value="{{$cart->id}}"   >
+                                                    <input style="width: 20%" class="quantity" min="1" name="quantity[]" value="{{$cart->qty}}" type="number">
+                                                    <button type="button" style="border: none;border-radius: 5px;padding: 7px" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
                                                             class=" btn-primary fa fa-plus"></button>
                                                 </div>
 
@@ -50,55 +84,18 @@
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div>
-                                                <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
+                                                <a href="{{url('cart/remove/'.$cart->id.'')}}" type="button" class="card-link-secondary small text-uppercase mr-3"><i
                                                         class="fas fa-trash-alt mr-1"></i> Remove item </a>
 
                                             </div>
-                                            <p class="mb-0"><span><strong id="summary">$17.99</strong></span></p class="mb-0">
+                                            @php $total=$total+($cart->price*$cart->qty); @endphp
+                                            <p class="mb-0"><span><strong id="summary">${{$cart->price*$cart->qty}}</strong></span></p class="mb-0">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <hr class="mb-4">
-                            <div class="row  mb-4 " style="    width: 100%;margin: 0px;">
-                                <div class="col-md-5 col-lg-3 col-xl-3 p-0">
-                                    <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-                                        <img class="img-fluid w-100"
-                                             src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg" alt="Sample">
-
-                                    </div>
-                                </div>
-                                <div class="col-md-7 col-lg-9 col-xl-9">
-                                    <div>
-                                        <div class="d-flex justify-content-between">
-                                            <div>
-                                                <h5>Blue denim shirt</h5>
-
-
-                                                <p class="mb-3 text-muted text-uppercase small">Size: M</p>
-                                            </div>
-                                            <div>
-                                                <div class="def-number-input number-input safari_only mb-0 w-100">
-                                                    <button style="border: none;border-radius: 5px;padding: 7px" onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
-                                                            class="btn-primary fa fa-minus"></button>
-                                                    <input class="quantity" min="1" name="quantity" value="1" type="number">
-                                                    <button style="border: none;border-radius: 5px;padding: 7px" onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
-                                                            class=" btn-primary fa fa-plus"></button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
-                                                        class="fas fa-trash-alt mr-1"></i> Remove item </a>
-
-                                            </div>
-                                            <p class="mb-0"><span><strong id="summary">$17.99</strong></span></p class="mb-0">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
 
                         </div>
                     </div>
@@ -139,12 +136,9 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                     Temporary amount
-                                    <span>$25.98</span>
+                                    <span>${{$total}}</span>
                                 </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                    Shipping
-                                    <span>Gratis</span>
-                                </li>
+
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                                     <div>
                                         <strong>The total amount of</strong>
@@ -152,14 +146,17 @@
                                             <p class="mb-0">(including VAT)</p>
                                         </strong>
                                     </div>
-                                    <span><strong>$53.98</strong></span>
+                                    <span><strong>${{$total}}</strong></span>
                                 </li>
                             </ul>
 
                           <a href="{{url('checkout')}}"> <button type="button" class="btn btn-primary btn-block">checkout</button>
                           </a>
+                            <button type="submit" class="btn btn-primary btn-block mt-2">Update Cart</button>
+
                         </div>
                     </div>
+                    </form>
 
                 </div>
                 <!--Grid column-->

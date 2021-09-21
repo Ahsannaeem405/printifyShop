@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\cart;
 use App\Models\order;
 use App\Models\orderDetail;
+use App\Models\transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Session;
@@ -27,6 +28,7 @@ class CartController extends Controller
 
     public function cart()
     {
+
 
         if (session()->has('user_id_shop')) {
             $id = \Session::get('user_id_shop');
@@ -83,7 +85,6 @@ class CartController extends Controller
 
 
         $order = new order();
-
         $order->customer_id = $id;
         $order->shop_id = $this->shop->id;
         $order->first_name = $request->f_name;
@@ -97,6 +98,7 @@ class CartController extends Controller
 
         $order->save();
         Session::put('order_id', $order->id);
+
 
         $total = 0;
         foreach ($data as $data) {
@@ -114,7 +116,10 @@ class CartController extends Controller
 
             $data->delete();
         }
-
+        Session::put('your_name',  $request->f_name);
+        Session::put('your_email',  $request->email);
+        Session::put('client_id',  $id);
+        Session::put('your_total',  $total);
         if ($request->payment == 'stripe') {
 
             return view('stripe', compact('total'));
@@ -162,6 +167,14 @@ class CartController extends Controller
                 $arr_body = $response->getData();
 
                 // Insert transaction data into the database
+
+                $tras=new transaction();
+                $tras->client_id=Session::get('client_id');
+                $tras->total=Session::get('your_total');
+                $tras->email=Session::get('your_email');
+                $tras->name=Session::get('your_name');
+                $tras->shop_id=$this->shop->id;
+                $tras->save();
 
                 $order=Session::get('order_id');
 
@@ -220,6 +233,15 @@ class CartController extends Controller
 
       if($charge->status=='succeeded')
       {
+
+          $tras=new transaction();
+          $tras->client_id=Session::get('client_id');
+          $tras->total=Session::get('your_total');
+          $tras->email=Session::get('your_email');
+          $tras->name=Session::get('your_name');
+          $tras->shop_id=$this->shop->id;
+          $tras->save();
+
 
           $order=Session::get('order_id');
 

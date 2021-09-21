@@ -108,9 +108,7 @@
                             <img class="mr-2" style="display: inline-block !important;" width="45px"
                                  src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
                                  alt="Visa">
-                            <img class="mr-2" style="display: inline-block !important;" width="45px"
-                                 src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
-                                 alt="American Express">
+
                             <img class="mr-2" style="display: inline-block !important;" width="45px"
                                  src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
                                  alt="Mastercard">

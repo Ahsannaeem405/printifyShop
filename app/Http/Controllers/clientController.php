@@ -92,7 +92,7 @@ return redirect('cart')->with('success','Product added to cart successfully!');
             $cart->client_id=$string;
             $cart->product_main_id=$request->product_main_id;
             $cart->product_id=$request->product_id;
-            $cart->shop_id=$request->shop_id;
+            $cart->shop_id=$this->shop->id;
             $cart->qty=$request->qty;
             $cart->color=$request->color;
             $cart->price=$request->price;

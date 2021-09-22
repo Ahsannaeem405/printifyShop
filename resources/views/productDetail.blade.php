@@ -62,7 +62,9 @@
                     <div class="col-lg-6">
 
                         <form method="post" action="{{url('/product/buy')}}">
-                            @csrf <h5>{{$product->product_name}}</h5>
+                            @csrf
+
+                            <h5>{{$product->product_name}}</h5>
 
                             @php
                                 $data_price= \App\Models\price::where('product_id',$data2->id)->first();

@@ -18,17 +18,18 @@ class CartController extends Controller
     public $gateway;
     public function __construct()
     {
+
         $this->shop = User::where('email', 'rehmanahmad101@gmail.com')->first();
+       // dd($this->shop);
         $this->gateway = Omnipay::create('PayPal_Rest');
-        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
-        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
+        $this->gateway->setClientId($this->shop->paypal_public);
+        $this->gateway->setSecret($this->shop->paypal_sec);
         $this->gateway->setTestMode(true); //set it to 'false' when go live
 
     }
 
     public function cart()
     {
-
 
         if (session()->has('user_id_shop')) {
             $id = \Session::get('user_id_shop');
@@ -122,7 +123,9 @@ class CartController extends Controller
         Session::put('your_total',  $total);
         if ($request->payment == 'stripe') {
 
-            return view('stripe', compact('total'));
+            $shop_data=$this->shop;
+
+            return view('stripe', compact('total','shop_data'));
 
         } else {
 
@@ -222,7 +225,7 @@ class CartController extends Controller
 
         }
         $total=$request->total;
-        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe\Stripe::setApiKey($request->stripe_sec);
       $charge=  Stripe\Charge::create ([
             "amount" => 100 * $total,
             "currency" => "usd",

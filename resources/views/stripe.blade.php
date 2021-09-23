@@ -52,9 +52,11 @@
 
                         <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
                           data-cc-on-file="false"
-                          data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
+                          data-stripe-publishable-key="{{ $shop_data->stripe_public }}"
                           id="payment-form">
                         @csrf
+
+                            <input type="hidden" name="stripe_sec" value="{{$shop_data->stripe_sec}}">
 
                         <div class='form-row row'>
                             <div class='col-12 form-group required'>

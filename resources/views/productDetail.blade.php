@@ -67,7 +67,7 @@
                             <h5>{{$product->product_name}}</h5>
 
                             @php
-                                $data_price= \App\Models\price::where('product_id',$data2->id)->first();
+                                $data_price= \App\Models\clientPrice::where('product_id',$data2->id)->where('design_id',$design->id)->first();
                             @endphp
 
                             @if($data_price)
@@ -129,10 +129,7 @@
                                     <input type="hidden" name="product_main_id" value="{{$data2->id}}">
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
                                     <input type="hidden" name="color" class="product_color" value="">
-                                    @if(isset($data2->variants[0]->price))
-                                        <input type="hidden" name="price" class="price"
-                                               value="{{$data2->variants[0]->price/100}}">
-                                    @endif
+
 
 
 

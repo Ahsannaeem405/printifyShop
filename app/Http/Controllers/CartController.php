@@ -22,8 +22,8 @@ class CartController extends Controller
         $this->shop = User::where('email', 'rehmanahmad101@gmail.com')->first();
        // dd($this->shop);
         $this->gateway = Omnipay::create('PayPal_Rest');
-        $this->gateway->setClientId($this->shop->paypal_public);
-        $this->gateway->setSecret($this->shop->paypal_sec);
+        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
+        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
         $this->gateway->setTestMode(true); //set it to 'false' when go live
 
     }

@@ -127,10 +127,9 @@
                             <ul class="list-group list-group-flush">
 
 
-                                <li class="font-weight-bold list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                <li class="font-weight-bold list-group-item d-flex  align-items-center border-0 px-0 pb-0">
                                    Select Payment Method
-                               <input type="radio" name="payment" value="paypal" checked>PayPal
-                               <input type="radio" name="payment" value="stripe" >Stripe
+                               <input type="radio" name="payment" value="paypal" style="margin: 10px !important;" checked><span>PayPal</span>
                                 </li>
 
                                 <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">

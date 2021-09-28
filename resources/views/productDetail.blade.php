@@ -45,7 +45,7 @@
 
                                             @endphp
 
-                                            <img src="{{env('BASE_PATH')."/$design->image"}}"
+                                            <img src="{{$design->image}}"
                                                  style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
                                         @endif
                                         <img src="{{$product->product_img}}">
@@ -86,36 +86,17 @@
                             @endif
 
 
-                            <h6>Colors</h6>
-                            @foreach($data2->options as $op)
-                                @if($op->type=='color')
-                                    @foreach($op->values as $values)
+                            <h6>Variants</h6>
 
-                                        <div title="{{$values->title}}"
+                            @foreach($data2->variants as $op)
+@if($op->is_available==true)
 
-                                             class="ml-1 mb-1 d-inline-block color_change" data="{{$values->id}}"
-                                             color="{{$values->colors[0]}}"
-                                             style="width: 30px;height: 30px;background: @if(isset($values->colors[0])){{$values->colors[0]}} @endif; border-radius: 50%">
-
-                                            <i style="margin-left: 7px;visibility:hidden"
-                                               class="fas fa-check icon_{{$values->id}} tick-icon"></i></div>
-                                    @endforeach
-
-                                @endif
-                            @endforeach
-
-
-                            <h6>Sizes</h6>
-                            @foreach($data2->options as $op)
-                                @if($op->type=='size')
-                                    @foreach($op->values as $values)
-                                        <input type="radio" checked name="size" value="{{$values->title}}">
-                                        <div title="{{$values->title}}"
+                                        <input type="radio" checked name="variation_id" value="{{$op->id}}">
+                                        <div title="{{$op->title}}"
                                              class="ml-1 mb-1 d-inline-block"
-                                             style="color: black">{{$values->title}}</div>
-                                    @endforeach
+                                             style="color: black">{{$op->title}}</div>
 
-                                @endif
+@endif
                             @endforeach
                             <div class="table-responsive">
 

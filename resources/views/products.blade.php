@@ -28,7 +28,7 @@
 
                                 @endphp
 
-                                <img src="{{env('BASE_PATH')."/$design->image"}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
+                                <img src="{{$design->image}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
                             @endif
                             <img class="card-img-top" src="{{$pro->product_img}}" style="height: 270px" alt="Card image cap">
                             <div class="card-body">

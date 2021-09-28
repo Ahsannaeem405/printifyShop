@@ -47,7 +47,7 @@
 
                                             @endphp
 
-                                            <img src="{{env('BASE_PATH')."/$design->image"}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
+                                            <img src="{{$design->image}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
                                         @endif
 
 
@@ -64,8 +64,7 @@
                                                 <h5>{{$cart->product->product_name}}</h5>
 
 
-                                                <p class="mb-1 text-muted text-uppercase small">Size: {{$cart->size}}</p>
-                                                <p class="mb-3 text-muted text-uppercase small">Color: {{$cart->color}}</p>
+                                                <p class="mb-1 text-muted text-uppercase small">Variation: {{$cart->variation_id}}</p>
                                             </div>
                                             <div>
 
@@ -105,13 +104,7 @@
 
                             <h5 class="mb-4">We accept</h5>
 
-                            <img class="mr-2" style="display: inline-block !important;" width="45px"
-                                 src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
-                                 alt="Visa">
 
-                            <img class="mr-2" style="display: inline-block !important;" width="45px"
-                                 src="https://mdbootstrap.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
-                                 alt="Mastercard">
                             <img class="mr-2" style="display: inline-block !important;" width="45px"
                                  src="https://mdbootstrap.com/wp-content/plugins/woocommerce/includes/gateways/paypal/assets/images/paypal.png"
                                  alt="PayPal acceptance mark">

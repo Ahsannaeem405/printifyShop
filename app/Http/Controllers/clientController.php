@@ -78,6 +78,7 @@ class clientController extends Controller
         $cart->shop_id=$this->shop->id;
         $cart->qty=$request->qty;
         $cart->color=$request->color;
+        $cart->variation_id=$request->variation_id;
         $cart->price=$request->price;
         $cart->size=$request->size;
         $cart->save();

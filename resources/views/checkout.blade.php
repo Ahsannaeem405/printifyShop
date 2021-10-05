@@ -62,12 +62,9 @@
                             <div class="d-flex flex-wrap">
                                 <div class="select-outline position-relative w-100">
                                     <label>Country</label>
-                                    <select class="mdb-select md-form md-outline form-control" required name="country">
-                                        <option value="" disabled selected>Choose your option</option>
-                                        <option value="1">Option 1</option>
-                                        <option value="2">Option 2</option>
-                                        <option value="3">Option 3</option>
-                                    </select>
+                                    <input type="text" name="country" required id="form14" placeholder="country" class="form-control">
+
+
 
                                 </div>
                             </div>
@@ -85,6 +82,12 @@
 
                                 <input name="city" type="text" required id="form17" class="form-control">
                             </div>
+
+        <div class="md-form md-outline">
+            <label for="form17">Zip code</label>
+
+            <input name="zip" type="number" required id="form17" class="form-control">
+        </div>
 
                             <!-- Phone -->
                             <div class="md-form md-outline">
@@ -106,6 +109,8 @@
                                 <textarea id="form76" name="info" class="md-textarea form-control" rows="4"></textarea>
 
                             </div>
+
+
 
 
                         </div>

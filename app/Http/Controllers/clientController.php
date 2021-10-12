@@ -33,6 +33,140 @@ class clientController extends Controller
 
     public function products()
     {
+        $item[] = array(
+            "id" => 73196,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+        $item[] = array(
+            "id" => 73197,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+
+
+
+
+        $item[] = array(
+            "id" => 73199,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+
+        $item[] = array(
+            "id" => 73200,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+        $item[] = array(
+            "id" => 73201,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+
+        $item[] = array(
+            "id" => 73203,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+        $item[] = array(
+            "id" => 73204,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+
+        $item[] = array(
+            "id" => 73207,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+        $item[] = array(
+            "id" => 73208,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+        $item[] = array(
+            "id" => 73209,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+
+        $item[] = array(
+            "id" => 73211,
+            "price" => 433,
+            'is_enabled' => true,
+
+
+        );
+
+
+
+
+        $image[] = array(
+            'id' => '615418498a1e3b00067b2e07',
+            "x" => 100,
+            "y" => 0.5,
+            "scale" => 1,
+            "angle" => 0
+        );
+
+        $placeholder[] = array(
+            'position' => 'front',
+            'images' => $image,
+        );
+
+        $print[] = array(
+            "variant_ids" => [73196,73197,73199,73200,73201,73203,73204,73207,73208,73209,73211],
+            "placeholders" => $placeholder,
+
+
+        );
+
+        $final=array(
+            'title' => 'rehman',
+            'description' => 'rehman',
+            'blueprint_id' => 706,
+            'print_provider_id' => 61,
+            'variants' => $item,
+            'print_areas' => $print,
+        );
+
+       // dd(json_encode($final));
+
+        $order = \Http::withToken(env('STORE_TOKEN'))
+            ->asJson()
+            ->put('https://api.printify.com/v1/shops/' . env('SHOP_ID') . '/products/61554a5a2b8731359d1107f3.json',
+
+
+$final
+
+
+            );
+
+
+        dd($order->body());
+
+
         $shop = $this->shop;
 
 
@@ -52,57 +186,54 @@ class clientController extends Controller
 
     public function productDetail($id)
     {
-        $product=product::find($id);
-
+        $product = product::find($id);
 
 
         $respose2 = \Http::withToken(env('STORE_TOKEN'))
-            ->get('https://api.printify.com/v1/shops/'.env('SHOP_ID').'/products/' . $product->product_id . '.json');
+            ->get('https://api.printify.com/v1/shops/' . env('SHOP_ID') . '/products/' . $product->product_id . '.json');
         $data2 = json_decode($respose2->body());
 
 
-        return view('productDetail',compact('product','data2'));
+        return view('productDetail', compact('product', 'data2'));
     }
+
     public function buy(Request $request)
     {
 
 
-        if(session()->has('user_id_shop'))
-        {
+        if (session()->has('user_id_shop')) {
 
-        $id=   \Session::get(('user_id_shop'));
-        $cart =new cart();
-        $cart->client_id=$id;
-        $cart->product_main_id=$request->product_main_id;
-        $cart->product_id=$request->product_id;
-        $cart->shop_id=$this->shop->id;
-        $cart->qty=$request->qty;
-        $cart->color=$request->color;
-        $cart->variation_id=$request->variation_id;
-        $cart->price=$request->price;
-        $cart->size=$request->size;
-        $cart->save();
-return redirect('cart')->with('success','Product added to cart successfully!');
-
-        }
-        else{
-           $string = Str::random(40);
-            \Session::put('user_id_shop',$string);
-
-            $cart =new cart();
-            $cart->client_id=$string;
-            $cart->product_main_id=$request->product_main_id;
-            $cart->product_id=$request->product_id;
-            $cart->shop_id=$this->shop->id;
-            $cart->qty=$request->qty;
-            $cart->color=$request->color;
-            $cart->price=$request->price;
-            $cart->size=$request->size;
+            $id = \Session::get(('user_id_shop'));
+            $cart = new cart();
+            $cart->client_id = $id;
+            $cart->product_main_id = $request->product_main_id;
+            $cart->product_id = $request->product_id;
+            $cart->shop_id = $this->shop->id;
+            $cart->qty = $request->qty;
+            $cart->color = $request->color;
+            $cart->variation_id = $request->variation_id;
+            $cart->price = $request->price;
+            $cart->size = $request->size;
             $cart->save();
-            return redirect('cart')->with('success','Product added to cart successfully!');
+            return redirect('cart')->with('success', 'Product added to cart successfully!');
+
+        } else {
+            $string = Str::random(40);
+            \Session::put('user_id_shop', $string);
+
+            $cart = new cart();
+            $cart->client_id = $string;
+            $cart->product_main_id = $request->product_main_id;
+            $cart->product_id = $request->product_id;
+            $cart->shop_id = $this->shop->id;
+            $cart->qty = $request->qty;
+            $cart->color = $request->color;
+            $cart->price = $request->price;
+            $cart->size = $request->size;
+            $cart->save();
+            return redirect('cart')->with('success', 'Product added to cart successfully!');
 
         }
-
 
 
     }

@@ -6,6 +6,7 @@ use App\Models\cart;
 use App\Models\product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class clientController extends Controller
@@ -33,6 +34,9 @@ class clientController extends Controller
 
     public function products()
     {
+
+
+
         $item[] = array(
             "id" => 73196,
             "price" => 433,

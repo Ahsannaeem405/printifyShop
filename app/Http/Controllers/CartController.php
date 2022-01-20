@@ -169,8 +169,7 @@ class CartController extends Controller
         );
          $data2 = json_decode($respose2->body());    
 
-           
-        dd($data2);
+        
 
         
 

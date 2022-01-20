@@ -170,7 +170,7 @@ class CartController extends Controller
          $data2 = json_decode($respose2->body());    
 
         
-
+           
         
 
 
@@ -186,7 +186,7 @@ class CartController extends Controller
         $order->address = $request->address;
         $order->info = $request->info;
         $order->zip = $request->zid;
-
+        $order->main_order_id=$data2->result->id;
         $order->save();
         Session::put('order_id', $order->id);
 

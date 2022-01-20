@@ -39,14 +39,16 @@
                                             $design=\App\Models\designs::find($product->design_id);
 
                                         @endphp
-                                       @if($product->productDetail[0]->position=='default')
-                                            @if($product->productDetail[0]->orderfrontimg!=null)
-                                            <img src="{{$product->productDetail[0]->orderfrontimg}}">
-                                          
-                                            @endif
-                                        @endif 
-                                      
+                                        @if($design)
+                                            @php
+                                                $detail=$product->productDetail;
 
+                                            @endphp
+
+                                            <img src="{{$design->image}}"
+                                                 style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
+                                        @endif
+                                        <img src="{{$product->product_img}}">
 
                                     </figure>
 
@@ -64,23 +66,38 @@
 
                             <h5>{{$product->product_name}}</h5>
 
-                            
-                            
+                            @php
+                                $data_price= \App\Models\clientPrice::where('product_id',$data2->id)->where('design_id',$design->id)->first();
+                            @endphp
 
-                                <p><span class="mr-1"><strong>$
-                                @if($price !=null)
-                                {{$price}}
-                                @else
-                                {{$product->product_price}}
+                            @if($data_price)
+
+                                <p><span class="mr-1"><strong>${{$data_price->updated}}</strong></span></p>
+
+
+
+                            @else
+
+                                @if(isset($data2->variants[0]->price))
+
+                                    <p><span class="mr-1"><strong>${{$data2->variants[0]->price/100}}</strong></span>
+                                    </p>
                                 @endif
-
-                                    </strong></span></p>
-
+                            @endif
 
 
+                            <h6>Variants</h6>
 
+                            @foreach($data2->variants as $op)
+@if($op->is_available==true)
 
-                          
+                                        <input type="radio" checked name="variation_id" value="{{$op->id}}">
+                                        <div title="{{$op->title}}"
+                                             class="ml-1 mb-1 d-inline-block"
+                                             style="color: black">{{$op->title}}</div>
+
+@endif
+                            @endforeach
                             <div class="table-responsive">
 
                             </div>
@@ -90,29 +107,29 @@
                                     <tbody>
 
 
-                                    <input type="hidden" name="product_main_id" value="{{$product->id}}">
+                                    <input type="hidden" name="product_main_id" value="{{$data2->id}}">
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
                                     <input type="hidden" name="color" class="product_color" value="">
-                                    <input type="hidden" checked name="variation_id" value="0">
 
 
 
 
 
-                                   
-                                    @if($price !=null)
-                                
+                                    @if($data_price)
+
                                         <input type="hidden" name="price" class="price"
-                                               value="{{$price}}">
+                                               value="{{$data_price->updated}}">
+
+
+
                                     @else
-                                        <input type="hidden" name="price" class="price"
-                                               value="{{$product->product_price}}">
+
+                                        @if(isset($data2->variants[0]->price))
+
+                                            <input type="hidden" name="price" class="price"
+                                                   value="{{$data2->variants[0]->price/100}}">
+                                        @endif
                                     @endif
-                                        
-
-
-
-                                    
 
                                     <tr>
                                         <td class="pl-0 pb-0 w-25">Quantity</td>
@@ -151,6 +168,7 @@
 
                             <p class="pt-1">
 
+                                {!!  $data2->description !!}
 
                             </p>
 

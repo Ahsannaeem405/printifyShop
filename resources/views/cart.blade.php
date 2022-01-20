@@ -37,7 +37,7 @@
                                 <div class="col-md-5 col-lg-3 col-xl-3 p-0">
                                     <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
 
-                                        @php
+                                        {{-- @php
                                             $design=\App\Models\designs::find($cart->product->design_id);
 
                                         @endphp
@@ -48,11 +48,11 @@
                                             @endphp
 
                                             <img src="{{$design->image}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
-                                        @endif
+                                        @endif --}}
 
 
-                                        <img class="img-fluid w-100"
-                                             src="{{$cart->product->product_img}}" alt="images">
+                                       
+                                        <img src="{{$cart->product->productDetail[0]->orderfrontimg}}" style="width:100px;">
 
                                     </div>
 

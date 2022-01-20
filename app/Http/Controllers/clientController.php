@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\cart;
 use App\Models\product;
 use App\Models\User;
+use App\Models\clientPrice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -168,7 +169,7 @@ $final
             );
 
 
-        dd($order->body());
+        //dd($order->body());
 
 
         $shop = $this->shop;
@@ -191,14 +192,15 @@ $final
     public function productDetail($id)
     {
         $product = product::find($id);
+        $price=clientPrice::where('shop_id',$this->shop->id)->where('product_id',$product->product_id)->value('updated');
+         
+ 
+        // $respose2 = \Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))
+        //     ->get('https://api.printify.com/v1/shops/' . env('SHOP_ID') . '/products/' . $product->product_id . '.json');
+        // $data2 = json_decode($respose2->body());
 
 
-        $respose2 = \Http::withToken(env('STORE_TOKEN'))
-            ->get('https://api.printify.com/v1/shops/' . env('SHOP_ID') . '/products/' . $product->product_id . '.json');
-        $data2 = json_decode($respose2->body());
-
-
-        return view('productDetail', compact('product', 'data2'));
+        return view('productDetail', compact('product','price'));
     }
 
     public function buy(Request $request)

@@ -33,6 +33,7 @@ class CartController extends Controller
     public function cart()
     {
 
+
         if (session()->has('user_id_shop')) {
             $id = \Session::get('user_id_shop');
 
@@ -70,8 +71,24 @@ class CartController extends Controller
         $id = \Session::get('user_id_shop');
         $data = cart::where('client_id', $id)->get();
         $total = 0;
+         $data = cart::where('client_id', $id)->get();
+       // dd($data[0]->productDetail);
+
+
+
+        // 1320
         foreach ($data as $data) {
             $total = $total + ($data->price * $data->qty);
+
+            $id=$data->product->product_id;
+             $respose2 =\Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))->get ('https://api.printful.com/store/products/'.$id);
+            $data2 = json_decode($respose2->body());
+            $vari_oid=$data2->result->sync_variants[0]->variant_id;
+            $update_var_id = cart::find($data->id);
+            $update_var_id->variation_id=$vari_oid;
+            $update_var_id->update();
+
+
         }
 
 
@@ -81,77 +98,81 @@ class CartController extends Controller
 
     public function cart_save(Request $request)
     {
+//$pro=261931936;
+        // $respose2 =\Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))->get ('https://api.printful.com/orders');
+        //  $data2 = json_decode($respose2->body());
+        // dd($data2);
+// $respose2 =\Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))->get ('https://api.printful.com/store/products/'.$pro);
+//          $data2 = json_decode($respose2->body());
+//          dd($data2->result->sync_variants[0]->variant_id);
+        // 1320
 
-
+        https://api.printful.com/orders
         $id = \Session::get('user_id_shop');
         $data = cart::where('client_id', $id)->get();
-
        // dd($data[0]->productDetail);
 
 
-        $address = array(
-            "first_name" => $request->f_name,
-            "last_name" => $request->l_name,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "country" => $request->country,
-            "region" => "",
+        $recipient = array(
+            "name" => $request->f_name,
+            "country_code" => 'PK',
             "address1" => $request->address,
-            "address2" => $request->info,
+            "phone" => $request->phone,
+            "email" => $request->email,
             "city" => $request->city,
+            "state_name"=>$request->country,
             "zip" => $request->zip
         );
 
-foreach ($data as $cart)
-{
+        foreach ($data as $cart)
+        {
+            $cover_img=$cart->productDetail2[0]->orderfrontimg;
+            $user_id=1;
+            $image = file_get_contents($cover_img);
+            file_put_contents(public_path("order/order".$user_id.".png"), $image);
+            $cover_img_get="order/order".$user_id.".png";
+            //dd($cover_img_get);
+            $getpath = env('Get_Path1');
+            $url=$getpath.$cover_img_get;
 
 
-    foreach ($cart->product->productDetail as $detail)
-    {
+            $files[]= array(
+                "url"=>$url,
+            );
 
-        $area[] = array(
-            "src" => $detail->design,
-            "scale" => 0.15,
-            "x" => 0.80,
-            "y" => 0.34,
-            "angle" => 0.34
-        );
-    }
+            $item[] = array(
+                "variant_id"=> $cart->variation_id,
+                "quantity"=> $cart->qty,
+                'files' => $files
 
-
-    $item[] = array(
-        "print_provider_id"=> 14,
-        "blueprint_id"=> 433,
-        'variant_id' => 62176,
-        'print_areas' => [
-            'front' =>$detail->design,
-        ],
-        "quantity" => 1,
-
-    );
-}
-
+            );
+        }
 
 
 
         $final = array(
 
-            'line_items' => $item,
+            'Recipient' => $recipient,
 
-            "shipping_method" => 1,
-            "send_shipping_notification" => false,
-            'address_to' => $address,
+            
+            'item' => $item,
         );
 
         //dd(json_encode($final));
 
-        $order = \Http::withToken(env('STORE_TOKEN'))
-            ->asJson()
-            ->post('https://api.printify.com/v1/shops/' . env('SHOP_ID') . '/orders.json',
-                $final
-            );
-        dd($order->body());
+       
+         $respose2 =\Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))->asJson()
+            ->post('https://api.printful.com/orders' , [
+                'recipient' => $recipient,
+                'items' => $item
+            ]
+        );
+         $data2 = json_decode($respose2->body());    
 
+           
+        dd($data2);
+
+        
 
 
         $order = new order();

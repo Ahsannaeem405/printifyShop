@@ -185,7 +185,7 @@ class CartController extends Controller
         $order->email = $request->email;
         $order->address = $request->address;
         $order->info = $request->info;
-        $order->zid = $request->zid;
+        $order->zip = $request->zid;
 
         $order->save();
         Session::put('order_id', $order->id);

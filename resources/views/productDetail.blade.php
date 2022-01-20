@@ -39,7 +39,7 @@
                                             $design=\App\Models\designs::find($product->design_id);
 
                                         @endphp
-                                       @if($product->productDetail[0]->position=='default')
+                                        @if($product->productDetail[0]->position=='default')
                                             @if($product->productDetail[0]->orderfrontimg!=null)
                                             <img src="{{$product->productDetail[0]->orderfrontimg}}">
                                           

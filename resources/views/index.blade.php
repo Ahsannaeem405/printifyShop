@@ -40,9 +40,15 @@
 
                                 @endphp
 
-                            <img src="{{$design->image}}" style="position: absolute;width: {{$detail[0]->size}}%;top: {{$detail[0]->top}}%;left: {{$detail[0]->left}}%;transform: rotate({{$detail[0]->angle*3.6}}deg)">
-@endif
-                            <img class="card-img-top" src="{{$pro->product_img}}" style="height: 270px" alt="Card image cap">
+                           
+                            @endif
+                            @if($pro->productDetail[0]->position=='default')
+                                @if($pro->productDetail[0]->orderfrontimg!=null)
+                                <img src="{{$pro->productDetail[0]->orderfrontimg}}">
+                              
+                                @endif
+                            @endif  
+                           {{--  <img class="card-img-top" src="{{$pro->product_img}}" style="height: 270px" alt="Card image cap"> --}}
                             <div class="card-body">
                                 <h5 class="card-title">{{$pro->product_name}}</h5>
                                 <a href="{{url("productDetail/$pro->id")}}" class="btn btn-primary">View Detail</a>

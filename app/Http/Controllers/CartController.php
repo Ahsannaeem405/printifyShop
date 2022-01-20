@@ -24,8 +24,8 @@ class CartController extends Controller
         $this->shop = User::where('email', 'rehmanahmad101@gmail.com')->first();
         // dd($this->shop);
         $this->gateway = Omnipay::create('PayPal_Rest');
-        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
-        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));
+        $this->gateway->setClientId(env('PAYPAL_CLIENT_ID','AQep0NsuXdjLdWEr_T9CfK0UQIOi3Ziy7KKlFlmyZBP_aneVDVXlYqbK-aALIWlmcCrJja3yA15-3UOm'));
+        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET','EEzWio3AC7wPf1I7lSwGZBbA_swDM4M_th4THbta9hOFrIlvn8LvU-50JJOqbhBooV2oON9lFY9l4gVX'));
         $this->gateway->setTestMode(true); //set it to 'false' when go live
 
     }
@@ -223,7 +223,7 @@ class CartController extends Controller
                 try {
                     $response = $this->gateway->purchase(array(
                         'amount' => $total,
-                        'currency' => env('PAYPAL_CURRENCY'),
+                        'currency' => env('PAYPAL_CURRENCY','EUR'),
                         'returnUrl' => url('paymentsuccess'),
                         'cancelUrl' => url('paymenterror'),
                     ))->send();

@@ -83,11 +83,11 @@
                                 <input name="city" type="text" required id="form17" class="form-control">
                             </div>
 
-        <div class="md-form md-outline">
-            <label for="form17">Zip code</label>
+                            <div class="md-form md-outline">
+                                <label for="form17">Zip code</label>
 
-            <input name="zip" type="number" required id="form17" class="form-control">
-        </div>
+                                <input name="zip" type="number" required id="form17" class="form-control">
+                            </div>
 
                             <!-- Phone -->
                             <div class="md-form md-outline">

@@ -8,6 +8,8 @@ use App\Models\orderDetail;
 use App\Models\productDetail;
 use App\Models\transaction;
 use App\Models\User;
+use App\Models\product;
+
 use Illuminate\Http\Request;
 use Session;
 use Stripe;

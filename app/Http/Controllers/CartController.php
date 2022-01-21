@@ -8,11 +8,13 @@ use App\Models\orderDetail;
 use App\Models\productDetail;
 use App\Models\transaction;
 use App\Models\User;
+use App\Models\product;
+
 use Illuminate\Http\Request;
 use Session;
 use Stripe;
 use Omnipay\Omnipay;
-
+use DB;
 class CartController extends Controller
 {
     private $shop;
@@ -161,8 +163,8 @@ class CartController extends Controller
         //dd(json_encode($final));
 
        
-         $respose2 =\Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))->asJson()
-            ->post('https://api.printful.com/orders' , [
+        $respose2 =\Http::withToken(env('STORE_TOKEN','CshXYfMUt98u1PcRFJuKphZ8ZgFMfv8cxEk8U2cJ'))->asJson()
+            ->post('https://api.printful.com/orders/' , [
                 'recipient' => $recipient,
                 'items' => $item
             ]
@@ -195,6 +197,9 @@ class CartController extends Controller
         $total = 0;
         foreach ($data as $data) {
             $total = $total + ($data->price * $data->qty);
+
+            $admin_price=product::find($data->product_id);
+            #admin_price
             $orderDetail = new orderDetail();
             $orderDetail->order_id = $order->id;
             $orderDetail->product_id = $data->product_id;
@@ -203,6 +208,7 @@ class CartController extends Controller
             $orderDetail->price = $data->price;
             $orderDetail->size = $data->size;
             $orderDetail->color = $data->color;
+            $orderDetail->orignal_price = $admin_price->product_price;
 
             $orderDetail->save();
 

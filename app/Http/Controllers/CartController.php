@@ -174,6 +174,9 @@ class CartController extends Controller
         
 
 
+        
+
+
         $order = new order();
         $order->customer_id = $id;
         $order->shop_id = $this->shop->id;
@@ -186,6 +189,7 @@ class CartController extends Controller
         $order->address = $request->address;
         $order->info = $request->info;
         $order->zip = $request->zid;
+        $order->status=$data2->result->status;
         $order->main_order_id=$data2->result->id;
         $order->save();
         Session::put('order_id', $order->id);
@@ -194,6 +198,9 @@ class CartController extends Controller
         $total = 0;
         foreach ($data as $data) {
             $total = $total + ($data->price * $data->qty);
+
+            $admin_price=product::find($data->product_id);
+            #admin_price
             $orderDetail = new orderDetail();
             $orderDetail->order_id = $order->id;
             $orderDetail->product_id = $data->product_id;
@@ -202,6 +209,7 @@ class CartController extends Controller
             $orderDetail->price = $data->price;
             $orderDetail->size = $data->size;
             $orderDetail->color = $data->color;
+            $orderDetail->orignal_price = $admin_price->product_price;
 
             $orderDetail->save();
 

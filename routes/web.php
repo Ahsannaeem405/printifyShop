@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::domain('blog.' . env('APP_URL'))->group(function () {
+Route::domain('blog.' . env('APP_URL'))->group(function () {
 
 
     Route::get('/',[\App\Http\Controllers\clientController::class,'index']);
@@ -32,4 +32,4 @@ use Illuminate\Support\Facades\Route;
     Route::post('/product/buy',[\App\Http\Controllers\clientController::class,'buy']);
 
 
-// });
+});
